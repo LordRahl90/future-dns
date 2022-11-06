@@ -1,0 +1,18 @@
+version: '3.1'
+services:
+  dns:
+    container_name: ha-dns
+    image: gcr.io/neurons-be-test/dns
+    ports:
+      - 8080:8080
+    environment:
+      ENVIRONMENT: "docker"
+      SECTOR_ID: 1500
+
+    networks:
+      - dns
+
+networks:
+  dns:
+    driver: bridge
+    
