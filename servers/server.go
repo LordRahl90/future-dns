@@ -50,8 +50,8 @@ func calculate(ctx *gin.Context) {
 	var res interface{}
 	switch respType {
 	case "mom":
-		res = map[string]float64{
-			"location": result,
+		res = responses.MomCorp{
+			Location: result,
 		}
 
 	default:
