@@ -29,7 +29,7 @@ func TestConvertRequestToDomainEntity(t *testing.T) {
 			name:   "all_empty",
 			arg:    Request{},
 			expErr: true,
-			errMsg: `strconv.ParseFloat: parsing "": invalid syntax`,
+			errMsg: `invalid X coordinate value: ()`,
 		},
 		{
 			name: "invalid_X",
@@ -37,7 +37,7 @@ func TestConvertRequestToDomainEntity(t *testing.T) {
 				CoordX: "x",
 			},
 			expErr: true,
-			errMsg: `strconv.ParseFloat: parsing "x": invalid syntax`,
+			errMsg: `invalid X coordinate value: (x)`,
 		},
 		{
 			name: "invalid_Y",
@@ -46,7 +46,7 @@ func TestConvertRequestToDomainEntity(t *testing.T) {
 				CoordY: "y",
 			},
 			expErr: true,
-			errMsg: `strconv.ParseFloat: parsing "y": invalid syntax`,
+			errMsg: `invalid Y coordinate value: (y)`,
 		},
 		{
 			name: "invalid_Z",
@@ -56,7 +56,7 @@ func TestConvertRequestToDomainEntity(t *testing.T) {
 				CoordZ: "z",
 			},
 			expErr: true,
-			errMsg: `strconv.ParseFloat: parsing "z": invalid syntax`,
+			errMsg: `invalid Z coordinate value: (z)`,
 		},
 		{
 			name: "invalid_velocity",
@@ -67,7 +67,7 @@ func TestConvertRequestToDomainEntity(t *testing.T) {
 				Velocity: "v",
 			},
 			expErr: true,
-			errMsg: `strconv.ParseFloat: parsing "v": invalid syntax`,
+			errMsg: `invalid velocity value: (v)`,
 		},
 		{
 			name: "valid_request",

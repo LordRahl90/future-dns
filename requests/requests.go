@@ -21,17 +21,17 @@ func (r *Request) ToDomainRequest() (*maths.Request, error) {
 
 	yCoord, err := strconv.ParseFloat(r.CoordY, 64)
 	if err != nil {
-		return nil, fmt.Errorf("invalid Y coordinate value %s", r.CoordY)
+		return nil, fmt.Errorf("invalid Y coordinate value: (%s)", r.CoordY)
 	}
 
 	zCoord, err := strconv.ParseFloat(r.CoordZ, 64)
 	if err != nil {
-		return nil, fmt.Errorf("invalid Z coordinate value %s", r.CoordZ)
+		return nil, fmt.Errorf("invalid Z coordinate value: (%s)", r.CoordZ)
 	}
 
 	vel, err := strconv.ParseFloat(r.Velocity, 64)
 	if err != nil {
-		return nil, fmt.Errorf("invalid velocity value %s", r.Velocity)
+		return nil, fmt.Errorf("invalid velocity value: (%s)", r.Velocity)
 	}
 
 	return &maths.Request{
