@@ -3,7 +3,6 @@ package servers
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -44,6 +43,65 @@ func TestCalculate(t *testing.T) {
 	res := handleRequest(t, http.MethodPost, "/calculate", b)
 	require.Equal(t, http.StatusOK, res.Code)
 	assert.Equal(t, `{"loc":0}`, res.Body.String())
+}
+
+func TestCalucateTestActualCalculations(t *testing.T) {
+	table := []struct {
+		name    string
+		request requests.Request
+		exp     string
+	}{
+		{
+			name: "velocity_200",
+			request: requests.Request{
+				CoordX:   "0",
+				CoordY:   "0",
+				CoordZ:   "0",
+				Velocity: "250.50",
+			},
+			exp: `{"loc":250.5}`,
+		},
+		{
+			name: "velocity_with_X",
+			request: requests.Request{
+				CoordX:   "3",
+				CoordY:   "0",
+				CoordZ:   "0",
+				Velocity: "250.50",
+			},
+			exp: `{"loc":280.5}`,
+		},
+		{
+			name: "velocity_with_x_and_y",
+			request: requests.Request{
+				CoordX:   "3",
+				CoordY:   "5.5",
+				CoordZ:   "0",
+				Velocity: "250.50",
+			},
+			exp: `{"loc":335.5}`,
+		},
+		{
+			name: "all_params",
+			request: requests.Request{
+				CoordX:   "3",
+				CoordY:   "5.5",
+				CoordZ:   "2.23",
+				Velocity: "250.50",
+			},
+			exp: `{"loc":357.8}`,
+		},
+	}
+
+	for _, tt := range table {
+		b, err := json.Marshal(tt.request)
+		require.NoError(t, err)
+		require.NotNil(t, b)
+
+		res := handleRequest(t, http.MethodPost, "/calculate", b)
+		require.Equal(t, http.StatusOK, res.Code)
+		assert.Equal(t, tt.exp, res.Body.String())
+	}
 }
 
 func TestCalculateWithMomCorp(t *testing.T) {
@@ -105,15 +163,12 @@ func handleRequest(t *testing.T, method, path string, payload []byte) *httptest.
 		err error
 	)
 	if len(payload) > 0 {
-		fmt.Printf("\nRequest: %s\n\n", payload)
 		req, err = http.NewRequest(method, path, bytes.NewBuffer(payload))
 	} else {
 		req, err = http.NewRequest(method, path, nil)
 	}
 	require.NoError(t, err)
 	server.Router.ServeHTTP(w, req)
-
-	fmt.Printf("\nResponse: %s\n", w.Body.String())
 
 	return w
 }

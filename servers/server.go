@@ -3,6 +3,7 @@ package servers
 import (
 	"dns/domains/maths"
 	"dns/requests"
+	"dns/responses"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -46,7 +47,7 @@ func calculate(ctx *gin.Context) {
 	}
 
 	result := ms.Calculate(ctx.Request.Context(), domainReq)
-	var res map[string]float64 //:= make(map[string]float64)
+	var res interface{}
 	switch respType {
 	case "mom":
 		res = map[string]float64{
@@ -54,8 +55,8 @@ func calculate(ctx *gin.Context) {
 		}
 
 	default:
-		res = map[string]float64{
-			"loc": result,
+		res = responses.Basic{
+			Location: result,
 		}
 	}
 

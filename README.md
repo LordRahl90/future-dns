@@ -1,5 +1,54 @@
 ## Drone Navigation System
 
+## Setup
+
+Pre-requisites: Please make sure docker is installed on the target machine <br />
+
+* Clone Repository
+* RUN `make` This will build the image and run`docker-compose up`
+* Application will be available on port `8080`
+
+## Sample
+
+Sample Request <br />
+PS: `SectorID` in this example is `1500`. However, feel free to change this and watch the result change accordingly. <br />
+```bash
+curl --location --request POST 'localhost:8080/calculate' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "x": "0",
+    "y": "0",
+    "z": "3",
+    "vel": "200"
+}'
+```
+This should return:
+```json
+{
+    "loc": 4700
+}
+```
+
+To test the MomCorp response:
+
+```bash
+curl --location --request POST 'localhost:8080/calculate?resp=mom' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "x": "0",
+    "y": "0",
+    "z": "3",
+    "vel": "200"
+}'
+```
+The response should be:
+```json
+{
+    "location": 4700
+}
+```
+
+
 ## Additional Questions
 
 1. For instrumentation, I will monitor the requests/per minute, the <br />latency of the requsts and also watch out for any CPU spike.<br /> My tool of choice here will be prometheus for exporting metrics and <br />grafana for visualization.

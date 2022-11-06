@@ -1,3 +1,8 @@
+.PHONY: bi
+
+all: bi
+	@docker-compose up
+
 test:
 	@go test ./... --cover
 
