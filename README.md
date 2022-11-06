@@ -6,14 +6,22 @@ Pre-requisites: Please make sure docker is installed on the target machine <br /
 
 * Clone Repository
 * RUN `make` This will build the image and run`docker-compose up`
-* Application will be available on port `8080`
+* Application will be available on `localhost:8080`
+
+PS: If you are not running with docker, please copy the content of `.envs/.env.example` into `.envs/.env` and fill in the fields. <br />
+If the environment is an empty string (`""`), the system will search for the env file in this location. <br />
+A solution to this can be to run the application with the environment variable specified. Eg: <br />
+`ENVIRONMENT=demo SECTOR_ID=300 make start`
 
 ## Sample
+
+Application was deployed to [Google Cloud Run](https://cloud.google.com/run) and it's available on 
+`https://dns-a336s4xzcq-ez.a.run.app` as the base URL. <br />
 
 Sample Request <br />
 PS: `SectorID` in this example is `1500`. However, feel free to change this and watch the result change accordingly. <br />
 ```bash
-curl --location --request POST 'localhost:8080/calculate' \
+curl --location --request POST 'https://dns-a336s4xzcq-ez.a.run.app/calculate' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "x": "0",
@@ -32,7 +40,7 @@ This should return:
 To test the MomCorp response:
 
 ```bash
-curl --location --request POST 'localhost:8080/calculate?resp=mom' \
+curl --location --request POST 'https://dns-a336s4xzcq-ez.a.run.app/calculate?resp=mom' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "x": "0",

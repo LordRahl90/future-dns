@@ -1,10 +1,11 @@
 package servers
 
 import (
+	"net/http"
+
 	"dns/domains/maths"
 	"dns/requests"
 	"dns/responses"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
