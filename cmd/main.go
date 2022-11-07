@@ -1,10 +1,11 @@
 package main
 
 import (
-	"dns/servers"
 	"log"
 	"os"
 	"strconv"
+
+	"dns/servers"
 
 	"github.com/joho/godotenv"
 )

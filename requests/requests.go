@@ -13,6 +13,8 @@ type Request struct {
 	Velocity string `json:"vel"`
 }
 
+// ToDomainRequest converts requests to domain entities.
+// this way, this service knows about a domain entity but the domain doesn't need to know about this service entity.
 func (r *Request) ToDomainRequest() (*maths.Request, error) {
 	xCoord, err := strconv.ParseFloat(r.CoordX, 64)
 	if err != nil {
