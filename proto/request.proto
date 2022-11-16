@@ -1,0 +1,21 @@
+syntax = "proto3";
+option go_package = "dns/proto";
+
+package pb;
+
+// Request defines the expected request
+message Request {
+    string CoordX = 1;
+    string CoordY = 2;
+    string CoordZ = 3;
+    string Velocity = 4;
+}
+
+// Response defines expected responses
+message Response {
+    float Location = 1;
+}
+
+service DNS {
+    rpc Calculate(Request) returns (Response){}
+}
