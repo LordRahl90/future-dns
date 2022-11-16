@@ -2,15 +2,21 @@ package main
 
 import (
 	"log"
+	"net"
 	"os"
 	"strconv"
+	"sync"
 
+	"dns/domains/maths"
+	"dns/proto"
 	"dns/servers"
 
 	"github.com/joho/godotenv"
+	"google.golang.org/grpc"
 )
 
 func main() {
+	var wg sync.WaitGroup
 	env := os.Getenv("ENVIRONMENT")
 	if env == "" || env == "development" {
 		if err := godotenv.Load(".envs/.env"); err != nil {
@@ -29,6 +35,30 @@ func main() {
 		panic(err)
 	}
 
-	server := servers.New(sectorID)
-	log.Fatal(server.Router.Run(":8080"))
+	ms := maths.New(sectorID)
+	grpcServer := grpc.NewServer()
+	dnsServer := servers.NewGRPCServer(ms)
+	proto.RegisterDNSServer(grpcServer, dnsServer)
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		listener, err := net.Listen("tcp", ":5500")
+		if err != nil {
+			panic(err)
+		}
+		log.Printf("GRPC Server starting on port 5500")
+		if err := grpcServer.Serve(listener); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	wg.Add(1)
+	go func() {
+		server := servers.New(sectorID)
+		log.Fatal(server.Router.Run(":8080"))
+	}()
+	wg.Wait()
+	// cleanup
+	// os.Exit(0)
 }

@@ -3,6 +3,7 @@ package servers
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -163,6 +164,7 @@ func handleRequest(t *testing.T, method, path string, payload []byte) *httptest.
 		err error
 	)
 	if len(payload) > 0 {
+		fmt.Printf("\n\nP: %s\n\n", payload)
 		req, err = http.NewRequest(method, path, bytes.NewBuffer(payload))
 	} else {
 		req, err = http.NewRequest(method, path, nil)
